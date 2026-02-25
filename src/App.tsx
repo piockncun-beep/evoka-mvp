@@ -6,4 +6,25 @@ function App() {
   );
 }
 
-export default App;
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./routes/Home";
+import SignInPage from "./routes/SignInPage";
+import SignUpPage from "./routes/SignUpPage";
+import ProtectedAppLayout from "./routes/ProtectedAppLayout";
+import Dashboard from "./routes/Dashboard";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sign-in/*" element={<SignInPage />} />
+        <Route path="/sign-up/*" element={<SignUpPage />} />
+
+        <Route path="/app" element={<ProtectedAppLayout />}>
+          <Route index element={<Dashboard />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
