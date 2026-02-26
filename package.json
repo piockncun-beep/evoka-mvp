@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 5173",
+    "dev": "concurrently -k \"vite --host 0.0.0.0 --port 5173 --strictPort\" \"pnpm api\"",
+    "api": "tsx watch src/server/index.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -12,11 +13,7 @@
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio",
-    "dev:api": "tsx watch src/server/index.ts",
-    "dev:full": "concurrently -k \"pnpm dev\" \"pnpm dev:api\"",
-    "dev:free": "vite --host 0.0.0.0 --port 5173",
-    "dev:full:free": "concurrently -k \"pnpm dev:free\" \"pnpm dev:api\""
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@clerk/backend": "^2.32.1",

@@ -1,3 +1,23 @@
+#
+# EVOKA MVP
+
+## Configuración API
+
+- Crea un archivo `.env` y copia el contenido de `.env.example`.
+- Asegúrate de tener Clerk configurado y la variable `VITE_API_URL` apuntando al backend (por defecto http://localhost:8787).
+- El frontend usa Clerk para autenticación y obtiene el token automáticamente.
+
+## Endpoints principales
+
+- POST /api/memories — crear memoria y obtener análisis PRIME
+- POST /api/memories/search — búsqueda semántica
+- POST /api/memories/:id/feedback — feedback sobre análisis PRIME
+
+Ver `README_API.md` para ejemplos curl.
+
+## Desarrollo en Codespaces
+- Abre SOLO el puerto 5173 para el frontend.
+- Usa un unico comando de desarrollo: `pnpm dev`.
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
