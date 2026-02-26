@@ -71,6 +71,18 @@ curl -X POST http://localhost:8787/api/memories \
   -d '{"content": "Hoy recorde a mi abuela y senti mucha nostalgia.", "title": "Abuela", "privacy": "private", "status": "active", "destiny": "self"}'
 ```
 
+Smoke script (curl):
+```
+TOKEN="<CLERK_TOKEN>"
+IDEMPOTENCY="<UUID_OR_CLIENT_KEY>"
+
+curl -X POST http://localhost:8787/api/memories \
+  -H "Authorization: Bearer ${TOKEN}" \
+  -H "Idempotency-Key: ${IDEMPOTENCY}" \
+  -H "Content-Type: application/json" \
+  -d '{"content": "Prueba rapida de memoria.", "privacy": "private"}'
+```
+
 Notas:
 - `authorId` nunca va en el body, siempre sale del token.
 - Repite la misma request con el mismo `Idempotency-Key` para obtener 200 con `{ "idempotent": true }`.
