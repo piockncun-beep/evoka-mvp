@@ -70,11 +70,19 @@ router.post('/search', async (req: Request, res) => {
   }
   const embedding_normalized = embeddingRes.vector;
   const results = await db.execute(sql`
-    SELECT *,
-      1 - (embedding_normalized <=> ${embedding_normalized}) AS similarity
-    FROM memories
-    WHERE user_id = ${userId}
-    ORDER BY embedding_normalized <=> ${embedding_normalized} ASC
+    SELECT
+      m.id,
+      m.content,
+      m.created_at,
+      pm.summary,
+      pm.emotion,
+      pm.topics,
+      pm.question,
+      1 - (pm.embedding_normalized <=> ${embedding_normalized}) AS similarity
+    FROM prime_memories pm
+    JOIN memories m ON m.id = pm.memory_id
+    WHERE m.author_id = ${userId}
+    ORDER BY pm.embedding_normalized <=> ${embedding_normalized} ASC
     LIMIT 10;
   `);
   // Log app_events

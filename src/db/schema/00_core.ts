@@ -1,4 +1,5 @@
-import { pgTable, uuid, text, timestamp, index, uniqueIndex } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, timestamp, index, uniqueIndex, jsonb, boolean } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -17,6 +18,9 @@ export const memories = pgTable('memories', {
   status: text('status').notNull().default('active'),
   idempotencyKey: text('idempotency_key'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+  meta: jsonb('meta').notNull().default(sql`'{}'::jsonb`),
+  isDeleted: boolean('is_deleted').notNull().default(false),
 }, (table) => ({
   authorCreatedIdx: index('idx_memories_author_created_at').on(table.authorId, table.createdAt),
   authorIdempotencyKeyUnique: uniqueIndex('idx_memories_author_idempotency_key').on(table.authorId, table.idempotencyKey),

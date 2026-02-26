@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1771987800050,
+      "tag": "20260226174515_memories_author_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771988400050,
+      "tag": "20260226180000_users",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771989000050,
+      "tag": "20260226181000_prime_memories",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771989600050,
+      "tag": "20260226182000_memories_author_id_text",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1771990200050,
+      "tag": "20260226183000_memories_author_id_fix",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1771990800050,
+      "tag": "20260226184000_memories_title_nullable",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1771991400050,
+      "tag": "20260226185000_memories_extra_columns",
+      "breakpoints": true
+    }
+  ]
+}
