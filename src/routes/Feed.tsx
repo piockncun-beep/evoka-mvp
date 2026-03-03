@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
 import { apiFetch } from "../lib/api";
@@ -50,7 +50,7 @@ export default function Feed() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<FeedTab>("public");
 
-  async function loadFeed() {
+  const loadFeed = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -85,7 +85,7 @@ export default function Feed() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [getToken, activeTab]);
 
   async function handleCreatePost(e: React.FormEvent) {
     e.preventDefault();
@@ -124,7 +124,7 @@ export default function Feed() {
 
   useEffect(() => {
     loadFeed();
-  }, [activeTab]);
+  }, [loadFeed]);
 
   return (
     <>
