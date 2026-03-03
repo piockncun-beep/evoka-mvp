@@ -79,7 +79,7 @@ function mapVisibility(value: string): "public" | "private" {
 }
 
 function buildExcerpt(content: string): string {
-  return content.slice(0, 180);
+  return content.slice(0, 140);
 }
 
 export async function getProfileSummary(
