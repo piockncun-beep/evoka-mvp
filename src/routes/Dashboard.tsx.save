@@ -1,5 +1,6 @@
 
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
+grep -n "onClick" src/routes/Dashboard.tsx
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { apiFetch } from "../lib/api";
@@ -15,20 +16,6 @@ type Memory = {
   created_at: string;
 };
 type RelatedMemory = Memory & { similarity?: number };
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
-}
-
-function readErrorMessage(error: unknown, fallback: string): string {
-  if (!isRecord(error)) return fallback;
-  const nested = error.error;
-  if (typeof nested === "string") return nested;
-  if (isRecord(nested) && typeof nested.message === "string") {
-    return nested.message;
-  }
-  return fallback;
-}
 
 
 export default function Dashboard() {
@@ -61,11 +48,7 @@ export default function Dashboard() {
     try {
       const token = await getToken();
       if (!token) throw new Error("Falta token de autenticación");
-      const data = await apiFetch<{
-        memory: Memory;
-        analysis: { summary: string; emotion: string; topics: string[]; question: string };
-        related: RelatedMemory[];
-      }>("/api/memories", {
+      const data = await apiFetch("/api/memories", {
         method: "POST",
         body: { content, destiny, visibility },
         token,
@@ -79,8 +62,8 @@ export default function Dashboard() {
         related_count: data.related?.length || 0,
       }, token);
       setContent("");
-    } catch (err: unknown) {
-      setError(readErrorMessage(err, "No se pudo guardar. Intenta nuevamente."));
+    } catch (err: any) {
+      setError(err?.error || "No se pudo guardar. Intenta nuevamente.");
     } finally {
       setLoading(false);
     }
@@ -93,7 +76,7 @@ export default function Dashboard() {
     try {
       const token = await getToken();
       if (!token) throw new Error("Falta token de autenticación");
-      await apiFetch<unknown>(`/api/memories/${prime.memory.id}/feedback`, {
+      await apiFetch(`/api/memories/${prime.memory.id}/feedback`, {
         method: "POST",
         body: { signal: is_positive, comment },
         token,
@@ -103,8 +86,8 @@ export default function Dashboard() {
         memory_id: prime.memory.id,
         comment: comment || undefined,
       }, token);
-    } catch (err: unknown) {
-      setError(readErrorMessage(err, "No se pudo enviar feedback."));
+    } catch (err: any) {
+      setError(err?.error || "No se pudo enviar feedback.");
     } finally {
       setFeedbackLoading(false);
       setShowFeedbackComment(false);
@@ -120,15 +103,15 @@ export default function Dashboard() {
     try {
       const token = await getToken();
       if (!token) throw new Error("Falta token de autenticación");
-      const data = await apiFetch<{ results?: RelatedMemory[] }>("/api/memories/search", {
+      const data = await apiFetch("/api/memories/search", {
         method: "POST",
         body: { query: search },
         token,
       });
       setSearchResults(data.results?.slice(0, 10) || []);
       sendEvent("semantic_search_used", { query: search, result_count: data.results?.length || 0 }, token);
-    } catch (err: unknown) {
-      setSearchError(readErrorMessage(err, "No se pudo buscar. Intenta nuevamente."));
+    } catch (err: any) {
+      setSearchError(err?.error || "No se pudo buscar. Intenta nuevamente.");
     } finally {
       setSearchLoading(false);
     }
@@ -185,23 +168,23 @@ export default function Dashboard() {
               {/* Summary editorial, clamp 3 líneas */}
               <div className="mb-2 relative">
                 <span className="block font-semibold mb-1">Resumen:</span>
-                <SummaryClamp text={prime?.analysis?.summary ?? ''} />
+                <SummaryClamp text={prime.analysis.summary} />
               </div>
               <div className="mb-2">
-                <span className="font-semibold">Emoción:</span> {prime?.analysis?.emotion ?? '—'}
+                <span className="font-semibold">Emoción:</span> {prime.analysis.emotion}
               </div>
               <div className="mb-2 flex flex-wrap gap-2 items-center">
                 <span className="font-semibold">Temas:</span>
-                {(prime?.analysis?.topics ?? []).slice(0, 5).map((t) => (
+                {prime.analysis.topics.slice(0, 5).map((t) => (
                   <span key={t} className="bg-blue-800 px-2 py-1 rounded text-xs">{t}</span>
                 ))}
-                {(prime?.analysis?.topics?.length ?? 0) > 5 && (
-                  <span className="bg-neutral-700 px-2 py-1 rounded text-xs">+{(prime?.analysis?.topics?.length ?? 0) - 5}</span>
+                {prime.analysis.topics.length > 5 && (
+                  <span className="bg-neutral-700 px-2 py-1 rounded text-xs">+{prime.analysis.topics.length - 5}</span>
                 )}
               </div>
               <div className="mb-2">
                 <div className="bg-neutral-800 rounded p-3 text-sm text-neutral-300 italic border border-neutral-700">
-                  {prime?.analysis?.question ?? '—'}
+                  {prime.analysis.question}
                 </div>
               </div>
               <div className="mt-4 flex gap-2 items-center">
@@ -301,15 +284,15 @@ export default function Dashboard() {
 
 function SummaryClamp({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
-  const clampStyle: React.CSSProperties = expanded
-    ? {}
-    : {
+  const clampStyle = expanded
+    ? ({} as React.CSSProperties)
+    : ({
         display: '-webkit-box',
         WebkitLineClamp: 3,
-        WebkitBoxOrient: 'vertical',
+        WebkitBoxOrient: 'vertical' as any,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-      };
+      } as React.CSSProperties);
   return (
     <>
       <p style={clampStyle} className="text-neutral-200 leading-relaxed whitespace-pre-line">{text}</p>

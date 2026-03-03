@@ -4,7 +4,8 @@
 ## Configuración API
 
 - Crea un archivo `.env` y copia el contenido de `.env.example`.
-- Asegúrate de tener Clerk configurado y la variable `VITE_API_URL` apuntando al backend (por defecto http://localhost:8787).
+- Configura `VITE_API_URL` apuntando al backend (por defecto http://localhost:8787).
+- Para Clerk en el frontend usa `VITE_CLERK_PUBLISHABLE_KEY` (no `NEXT_PUBLIC_*` ni `CLERK_SECRET_KEY`).
 - El frontend usa Clerk para autenticación y obtiene el token automáticamente.
 
 ## Endpoints principales

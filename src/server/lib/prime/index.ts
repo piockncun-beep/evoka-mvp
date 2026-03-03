@@ -178,7 +178,7 @@ Destino: ${destiny}`;
         usage: { budget_month: monthKey, estimated_usd: estimatedUsd, real_usd: realUsd, usage },
         latency_ms: Math.round(performance.now() - t0),
       };
-    } catch (err) {
+    } catch {
       retries++;
       if (retries >= 3) {
         // Fallback por error
@@ -202,7 +202,7 @@ Destino: ${destiny}`;
   }
 }
 
-export async function embedText(text: string): Promise<{ vector: number[]; provider: "openai"|"fallback"|"mock"; usage?: any; latency_ms: number; }> {
+export async function embedText(text: string): Promise<{ vector: number[]; provider: "openai"|"fallback"|"mock"; usage?: unknown; latency_ms: number; }> {
   const t0 = performance.now();
   const monthKey = getMonthKey();
   const budgetLimit = parseFloat(process.env.PRIME_BUDGET_LIMIT_USD || '5');
@@ -289,7 +289,7 @@ export async function embedText(text: string): Promise<{ vector: number[]; provi
         usage: { budget_month: monthKey, estimated_usd: estimatedUsd, real_usd: realUsd, usage },
         latency_ms: Math.round(performance.now() - t0),
       };
-    } catch (err) {
+    } catch {
       retries++;
       if (retries >= 3) break;
     }
