@@ -9,6 +9,7 @@ import ProtectedAppLayout from "./routes/ProtectedAppLayout";
 import Dashboard from "./routes/Dashboard";
 import Feed from "./routes/Feed";
 import Notifications from "./routes/Notifications";
+import Profile from "./routes/Profile";
 import "./index.css";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -27,6 +28,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/app" element={<Dashboard />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </BR>

@@ -20,6 +20,9 @@ export default function AppLayout() {
             <NavLink to="/notifications" className={navClass}>
               Notifications
             </NavLink>
+            <NavLink to="/profile" className={navClass}>
+              Profile
+            </NavLink>
           </nav>
         </div>
         <UserButton afterSignOutUrl="/" />

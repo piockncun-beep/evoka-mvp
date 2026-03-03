@@ -8,6 +8,7 @@ import { db } from "./db.js";
 import { users } from "../db/schema/00_core.js";
 import memoriesRouter from "./memories.js";
 import socialRouter from "./social.js";
+import { getProfileSummary } from "./profileSummary.js";
 
 declare module "express" {
   interface Request {
@@ -83,6 +84,32 @@ app.post("/api/me/sync", authMiddleware, async (req: Request, res) => {
       },
     });
   res.json({ ok: true });
+});
+
+app.get("/api/me/profile-summary", authMiddleware, async (req: Request, res) => {
+  const userId = req.auth?.userId;
+  if (!userId) {
+    return res.status(401).json({
+      ok: false,
+      error: { code: "UNAUTHORIZED", message: "Unauthorized" },
+    });
+  }
+
+  try {
+    const cursor =
+      typeof req.query.cursor === "string" ? req.query.cursor : undefined;
+    const summary = await getProfileSummary(userId, cursor);
+    return res.json(summary);
+  } catch (error) {
+    console.error("GET /api/me/profile-summary failed", { userId, error });
+    return res.status(500).json({
+      ok: false,
+      error: {
+        code: "INTERNAL_ERROR",
+        message: "Could not load profile summary",
+      },
+    });
+  }
 });
 
 app.post("/api/app_events", authMiddleware, (_req: Request, res) => {
