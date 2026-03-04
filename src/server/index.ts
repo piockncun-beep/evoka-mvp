@@ -99,7 +99,7 @@ app.get("/api/me/profile-summary", authMiddleware, async (req: Request, res) => 
     const cursor =
       typeof req.query.cursor === "string" ? req.query.cursor : undefined;
     const summary = await getProfileSummary(userId, cursor);
-    return res.json(summary);
+    return res.json({ ok: true, data: summary });
   } catch (error) {
     console.error("GET /api/me/profile-summary failed", { userId, error });
     return res.status(500).json({

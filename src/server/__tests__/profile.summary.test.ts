@@ -241,48 +241,51 @@ describe("GET /api/me/profile-summary", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
-      profile: {
-        userId: "user_test_123",
-        displayName: "Felipe",
-        username: null,
-        bio: "Bio demo",
-        avatarUrl: "https://example.com/avatar.png",
-        createdAt: "2026-03-01T10:00:00.000Z",
-      },
-      counts: {
-        memoriesTotal: 3,
-        memoriesPublic: 1,
-        memoriesPrivate: 2,
-      },
-      social: {
-        followersCount: 2,
-        followingCount: 1,
-      },
-      memories: {
-        items: [
-          {
-            id: "mem_1",
-            title: "Pública",
-            excerpt: "contenido publico",
-            visibility: "public",
-            createdAt: "2026-03-02T10:00:00.000Z",
-          },
-          {
-            id: "mem_2",
-            title: null,
-            excerpt: "contenido privado",
-            visibility: "private",
-            createdAt: "2026-03-01T10:00:00.000Z",
-          },
-          {
-            id: "mem_3",
-            title: "No pública",
-            excerpt: "contenido dedicado",
-            visibility: "private",
-            createdAt: "2026-02-28T10:00:00.000Z",
-          },
-        ],
-        nextCursor: null,
+      ok: true,
+      data: {
+        profile: {
+          userId: "user_test_123",
+          displayName: "Felipe",
+          username: null,
+          bio: "Bio demo",
+          avatarUrl: "https://example.com/avatar.png",
+          createdAt: "2026-03-01T10:00:00.000Z",
+        },
+        counts: {
+          memoriesTotal: 3,
+          memoriesPublic: 1,
+          memoriesPrivate: 2,
+        },
+        social: {
+          followersCount: 2,
+          followingCount: 1,
+        },
+        memories: {
+          items: [
+            {
+              id: "mem_1",
+              title: "Pública",
+              excerpt: "contenido publico",
+              visibility: "public",
+              createdAt: "2026-03-02T10:00:00.000Z",
+            },
+            {
+              id: "mem_2",
+              title: null,
+              excerpt: "contenido privado",
+              visibility: "private",
+              createdAt: "2026-03-01T10:00:00.000Z",
+            },
+            {
+              id: "mem_3",
+              title: "No pública",
+              excerpt: "contenido dedicado",
+              visibility: "private",
+              createdAt: "2026-02-28T10:00:00.000Z",
+            },
+          ],
+          nextCursor: null,
+        },
       },
     });
   });

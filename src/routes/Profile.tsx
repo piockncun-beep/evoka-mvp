@@ -35,6 +35,11 @@ type ProfileSummaryResponse = {
   };
 };
 
+type ProfileSummaryEnvelope = {
+  ok: true;
+  data: ProfileSummaryResponse;
+};
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -82,7 +87,7 @@ export default function Profile() {
         const token = await getToken();
         if (!token) throw { status: 401 };
 
-        const response = await apiFetch<ProfileSummaryResponse>(
+        const response = await apiFetch<ProfileSummaryEnvelope>(
           "/api/me/profile-summary",
           {
             method: "GET",
@@ -91,7 +96,7 @@ export default function Profile() {
         );
 
         if (!isMounted) return;
-        setData(response);
+        setData(response.data);
       } catch (err: unknown) {
         if (!isMounted) return;
         const status = readStatus(err);
